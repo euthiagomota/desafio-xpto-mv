@@ -1,6 +1,6 @@
 package com.xpto.financemanager.entities;
 
-import com.xpto.financemanager.enuns.ETransactionType;
+import com.xpto.financemanager.enums.ETransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

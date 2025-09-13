@@ -4,7 +4,7 @@ import com.xpto.financemanager.dtos.RequestTransactionDto;
 import com.xpto.financemanager.dtos.ResponseTransactionDto;
 import com.xpto.financemanager.entities.AccountEntity;
 import com.xpto.financemanager.entities.TransactionEntity;
-import com.xpto.financemanager.enuns.ETransactionType;
+import com.xpto.financemanager.enums.ETransactionType;
 import com.xpto.financemanager.repositories.AccountRepository;
 import com.xpto.financemanager.repositories.AddressRepository;
 import com.xpto.financemanager.repositories.CustomerRepository;

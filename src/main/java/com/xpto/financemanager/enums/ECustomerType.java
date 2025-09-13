@@ -1,4 +1,4 @@
-package com.xpto.financemanager.enuns;
+package com.xpto.financemanager.enums;
 
 public enum ECustomerType {
     PF,

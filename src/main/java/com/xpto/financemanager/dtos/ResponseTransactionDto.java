@@ -1,6 +1,6 @@
 package com.xpto.financemanager.dtos;
 
-import com.xpto.financemanager.enuns.ETransactionType;
+import com.xpto.financemanager.enums.ETransactionType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

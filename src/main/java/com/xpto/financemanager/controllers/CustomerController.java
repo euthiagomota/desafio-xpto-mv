@@ -2,7 +2,7 @@ package com.xpto.financemanager.controllers;
 
 import com.xpto.financemanager.dtos.RequestCustomerDto;
 import com.xpto.financemanager.dtos.ResponseCustomerDto;
-import com.xpto.financemanager.enuns.ECustomerType;
+import com.xpto.financemanager.enums.ECustomerType;
 import com.xpto.financemanager.services.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

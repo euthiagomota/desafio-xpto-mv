@@ -9,7 +9,6 @@ import com.xpto.financemanager.exceptions.AccountAlreadyExistsException;
 import com.xpto.financemanager.exceptions.NotFoundException;
 import com.xpto.financemanager.repositories.AccountRepository;
 import com.xpto.financemanager.repositories.CustomerRepository;
-import com.xpto.financemanager.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,18 +17,15 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final TransactionService transactionService;
     private final CustomerRepository customerRepository;
-    private final TransactionRepository transactionRepository;
 
     public AccountService(
             AccountRepository accountRepository,
             TransactionService transactionService,
-            CustomerRepository customerRepository,
-            TransactionRepository transactionRepository
+            CustomerRepository customerRepository
     ) {
         this.accountRepository = accountRepository;
         this.transactionService = transactionService;
         this.customerRepository = customerRepository;
-        this.transactionRepository = transactionRepository;
     }
 
     public void registerInitialAccount(CustomerEntity customer, RequestAccountDto dto) {

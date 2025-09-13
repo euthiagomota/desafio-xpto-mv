@@ -2,14 +2,12 @@ package com.xpto.financemanager.controllers;
 
 import com.xpto.financemanager.dtos.RequestTransactionDto;
 import com.xpto.financemanager.dtos.ResponseTransactionDto;
-import com.xpto.financemanager.enuns.ETransactionType;
+import com.xpto.financemanager.enums.ETransactionType;
 import com.xpto.financemanager.services.TransactionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("transaction")

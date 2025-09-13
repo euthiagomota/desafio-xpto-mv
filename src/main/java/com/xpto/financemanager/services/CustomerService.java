@@ -4,7 +4,7 @@ import com.xpto.financemanager.dtos.RequestCustomerDto;
 import com.xpto.financemanager.dtos.ResponseCustomerDto;
 import com.xpto.financemanager.entities.AddressEntity;
 import com.xpto.financemanager.entities.CustomerEntity;
-import com.xpto.financemanager.enuns.ECustomerType;
+import com.xpto.financemanager.enums.ECustomerType;
 import com.xpto.financemanager.repositories.AddressRepository;
 import com.xpto.financemanager.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;

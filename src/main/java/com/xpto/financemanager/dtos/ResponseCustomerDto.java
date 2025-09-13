@@ -1,6 +1,6 @@
 package com.xpto.financemanager.dtos;
 
-import com.xpto.financemanager.enuns.ECustomerType;
+import com.xpto.financemanager.enums.ECustomerType;
 
 import java.time.LocalDateTime;
 

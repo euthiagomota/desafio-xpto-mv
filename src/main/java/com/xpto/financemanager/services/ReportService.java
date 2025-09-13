@@ -4,7 +4,7 @@ import com.xpto.financemanager.entities.AccountEntity;
 import com.xpto.financemanager.entities.AddressEntity;
 import com.xpto.financemanager.entities.CustomerEntity;
 import com.xpto.financemanager.entities.TransactionEntity;
-import com.xpto.financemanager.enuns.ETransactionType;
+import com.xpto.financemanager.enums.ETransactionType;
 import com.xpto.financemanager.exceptions.NotFoundException;
 import com.xpto.financemanager.repositories.AccountRepository;
 import com.xpto.financemanager.repositories.AddressRepository;
