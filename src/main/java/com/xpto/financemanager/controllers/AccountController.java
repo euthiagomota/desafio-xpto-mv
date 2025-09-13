@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class AccountController {
     )
     @PostMapping("/{customerId}")
     public ResponseEntity<ResponseAccountDto> register(
-            @RequestBody RequestAccountDto dto,
+            @Valid @RequestBody RequestAccountDto dto,
             @PathVariable("customerId") Long customerId
     ) {
         ResponseAccountDto response = this.accountService.registerAccount(customerId, dto);
@@ -51,7 +52,7 @@ public class AccountController {
 
     @PatchMapping("/{id}/update")
     public ResponseEntity<ResponseAccountDto> update(
-            @RequestBody UpdateAccountDto dto,
+            @Valid  @RequestBody UpdateAccountDto dto,
             @PathVariable("id") Long id
             ) {
         ResponseAccountDto response =  this.accountService.updateAccount(id, dto);
