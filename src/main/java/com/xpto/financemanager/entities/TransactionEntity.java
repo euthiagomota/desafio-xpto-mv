@@ -39,7 +39,8 @@ public class TransactionEntity {
     @Column(nullable = true)
     private String description;
 
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private AccountEntity account;
 

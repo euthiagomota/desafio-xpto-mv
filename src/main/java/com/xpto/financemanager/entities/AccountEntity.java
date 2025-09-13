@@ -42,12 +42,9 @@ public class AccountEntity {
     private String agency;
     private Boolean active;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 
     private BigDecimal balance;
-
-    @OneToMany(mappedBy = "account")
-    private List<TransactionEntity> transactions;
 }

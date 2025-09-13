@@ -74,7 +74,7 @@ public class CustomerService {
         );
         this.addressRepository.save(address);
 
-        this.accountService.createInitialAccount(customer, dto.account());
+        this.accountService.registerInitialAccount(customer, dto.account());
 
         return new ResponseCustomerDto(
                 customerSaved.getId(),

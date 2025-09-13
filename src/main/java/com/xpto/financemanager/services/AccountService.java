@@ -2,12 +2,14 @@ package com.xpto.financemanager.services;
 
 import com.xpto.financemanager.dtos.RequestAccountDto;
 import com.xpto.financemanager.dtos.ResponseAccountDto;
+import com.xpto.financemanager.dtos.UpdateAccountDto;
 import com.xpto.financemanager.entities.AccountEntity;
 import com.xpto.financemanager.entities.CustomerEntity;
 import com.xpto.financemanager.exceptions.AccountAlreadyExistsException;
 import com.xpto.financemanager.exceptions.NotFoundException;
 import com.xpto.financemanager.repositories.AccountRepository;
 import com.xpto.financemanager.repositories.CustomerRepository;
+import com.xpto.financemanager.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,18 +18,21 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final TransactionService transactionService;
     private final CustomerRepository customerRepository;
+    private final TransactionRepository transactionRepository;
 
     public AccountService(
             AccountRepository accountRepository,
             TransactionService transactionService,
-            CustomerRepository customerRepository
+            CustomerRepository customerRepository,
+            TransactionRepository transactionRepository
     ) {
         this.accountRepository = accountRepository;
         this.transactionService = transactionService;
         this.customerRepository = customerRepository;
+        this.transactionRepository = transactionRepository;
     }
 
-    public void createInitialAccount(CustomerEntity customer, RequestAccountDto dto) {
+    public void registerInitialAccount(CustomerEntity customer, RequestAccountDto dto) {
         var existingAccount = accountRepository.
                 findByAccountNumberAndBankAndAgency(dto.accountNumber(), dto.bank(), dto.agency());
 
@@ -79,6 +84,24 @@ public class AccountService {
                 savedAccount.getBalance(),
                 savedAccount.getCustomer().getName(),
                 savedAccount.getActive()
+        );
+    }
+
+    public ResponseAccountDto updateAccount(Long accountId, UpdateAccountDto dto) {
+        var account = this.accountRepository.findById(accountId)
+                .orElseThrow(() -> new NotFoundException("Conta com id " + accountId + " não encontrada"));
+
+        account.setActive(dto.active());
+        var accountSaved = this.accountRepository.save(account);
+
+        return new ResponseAccountDto(
+                accountSaved.getId(),
+                accountSaved.getAccountNumber(),
+                accountSaved.getBank(),
+                accountSaved.getAgency(),
+                accountSaved.getBalance(),
+                accountSaved.getCustomer().getName(),
+                accountSaved.getActive()
         );
     }
 }

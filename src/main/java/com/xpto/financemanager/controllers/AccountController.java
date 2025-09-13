@@ -3,6 +3,7 @@ package com.xpto.financemanager.controllers;
 import com.xpto.financemanager.dtos.RequestAccountDto;
 import com.xpto.financemanager.dtos.ResponseAccountDto;
 import com.xpto.financemanager.dtos.ResponseCustomerDto;
+import com.xpto.financemanager.dtos.UpdateAccountDto;
 import com.xpto.financemanager.services.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -46,5 +47,15 @@ public class AccountController {
         ResponseAccountDto response = this.accountService.registerAccount(customerId, dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PatchMapping("/{id}/update")
+    public ResponseEntity<ResponseAccountDto> update(
+            @RequestBody UpdateAccountDto dto,
+            @PathVariable("id") Long id
+            ) {
+        ResponseAccountDto response =  this.accountService.updateAccount(id, dto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

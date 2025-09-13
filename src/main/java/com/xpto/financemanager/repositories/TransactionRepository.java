@@ -13,4 +13,6 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
     BigDecimal calculateCustomerValue(@Param("customerId") Long customerId);
 
     List<TransactionEntity> findByAccountIdIn(List<Long> accountIds);
+
+    boolean existsByAccountId(Long accountId);
 }

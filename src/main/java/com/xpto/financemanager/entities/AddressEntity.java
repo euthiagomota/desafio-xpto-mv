@@ -47,7 +47,7 @@ public class AddressEntity {
     private String state;
     private String zipCode;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 }
