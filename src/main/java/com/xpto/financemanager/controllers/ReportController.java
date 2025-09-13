@@ -3,10 +3,9 @@ package com.xpto.financemanager.controllers;
 import com.xpto.financemanager.services.ReportService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/reports")
@@ -22,6 +21,17 @@ public class ReportController {
     @GetMapping("/{customerId}")
     public ResponseEntity<String> getCustomerReport(@PathVariable Long customerId) {
         String report = reportService.generateCustomerReport(customerId);
+        return ResponseEntity.ok(report);
+    }
+
+    @GetMapping("/{customerId}/period")
+    public ResponseEntity<String> getCustomerReport(
+            @PathVariable Long customerId,
+            @RequestParam("initialDate") LocalDate initialDate,
+            @RequestParam("finalDate") LocalDate finalDate
+
+    ) {
+        String report = reportService.generateCustomerReportPerPeriod(customerId, initialDate, finalDate);
         return ResponseEntity.ok(report);
     }
 }
