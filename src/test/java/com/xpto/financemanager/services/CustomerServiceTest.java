@@ -1,9 +1,6 @@
 package com.xpto.financemanager.services;
 
-import com.xpto.financemanager.dtos.RequestAccountDto;
-import com.xpto.financemanager.dtos.RequestAddressDto;
-import com.xpto.financemanager.dtos.RequestCustomerDto;
-import com.xpto.financemanager.dtos.UpdateCustomerDto;
+import com.xpto.financemanager.dtos.*;
 import com.xpto.financemanager.entities.Address;
 import com.xpto.financemanager.entities.Customer;
 import com.xpto.financemanager.enums.CustomerType;
@@ -67,11 +64,11 @@ class CustomerServiceTest {
                 });
         when(addressRepository.save(any(Address.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        var response = customerService.createCustomer(requestDto, CustomerType.PF);
+        ResponseCustomerDto response = customerService.createCustomer(requestDto, CustomerType.PF);
 
         assertNotNull(response);
-        assertEquals("João Silva", response.name());
-        assertEquals("12345678901", response.cpf());
+        assertEquals("João Silva", response.getName());
+        assertEquals("12345678901", response.getCpf());
         verify(customerRepository, times(1)).save(any(Customer.class));
         verify(accountService, times(1)).registerInitialAccount(any(Customer.class), any());
     }
@@ -80,7 +77,7 @@ class CustomerServiceTest {
     void shouldNotCreateIndividualCustomerWithoutCpf() {
         RequestCustomerDto dtoSemCpf = new RequestCustomerDto(
                 "João Silva", null, null, "11999999999",
-                requestDto.address(), requestDto.account()
+                requestDto.getAddress(), requestDto.getAccount()
         );
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
@@ -93,7 +90,7 @@ class CustomerServiceTest {
     void shouldNotCreateCompanyCustomerWithoutCnpj() {
         RequestCustomerDto dtoSemCnpj = new RequestCustomerDto(
                 "Empresa X", null, null, "1133334444",
-                requestDto.address(), requestDto.account()
+                requestDto.getAddress(), requestDto.getAccount()
         );
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
@@ -106,7 +103,7 @@ class CustomerServiceTest {
     void shouldNotCreateCustomerWithBothCpfAndCnpj() {
         RequestCustomerDto dtoComCpfECnpj = new RequestCustomerDto(
                 "Maria", "12345678901", "11111111000111", "11988887777",
-                requestDto.address(), requestDto.account()
+                requestDto.getAddress(), requestDto.getAccount()
         );
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
@@ -125,10 +122,10 @@ class CustomerServiceTest {
 
         UpdateCustomerDto updateDto = new UpdateCustomerDto("Ana Maria", "2222");
 
-        var response = customerService.update(10L, updateDto);
+        ResponseCustomerDto response = customerService.update(10L, updateDto);
 
-        assertEquals("Ana Maria", response.name());
-        assertEquals("2222", response.phone());
+        assertEquals("Ana Maria", response.getName());
+        assertEquals("2222", response.getPhone());
     }
 
     @Test

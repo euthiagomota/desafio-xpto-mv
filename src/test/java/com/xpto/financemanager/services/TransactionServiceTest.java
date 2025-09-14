@@ -66,14 +66,14 @@ class TransactionServiceTest {
         when(accountRepository.findByAccountNumberAndBankAndAgency("123", "BankX", "0001"))
                 .thenReturn(Optional.of(account));
 
-        Transaction transaction = new Transaction(TransactionType.CREDIT, dto.amount(), dto.description(), account);
+        Transaction transaction = new Transaction(TransactionType.CREDIT, dto.getAmount(), dto.getDescription(), account);
         when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
 
         ResponseTransactionDto response = transactionService.createTransaction(dto, TransactionType.CREDIT);
 
         assertNotNull(response);
         assertEquals(BigDecimal.valueOf(700), account.getBalance());
-        assertEquals("John Doe", response.customerName());
+        assertEquals("John Doe", response.getCustomerName());
         verify(accountRepository).save(account);
     }
 
@@ -95,14 +95,14 @@ class TransactionServiceTest {
         when(accountRepository.findByAccountNumberAndBankAndAgency("456", "BankY", "0002"))
                 .thenReturn(Optional.of(account));
 
-        Transaction transaction = new Transaction(TransactionType.DEBIT, dto.amount(), dto.description(), account);
+        Transaction transaction = new Transaction(TransactionType.DEBIT, dto.getAmount(), dto.getDescription(), account);
         when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
 
         ResponseTransactionDto response = transactionService.createTransaction(dto, TransactionType.DEBIT);
 
         assertNotNull(response);
         assertEquals(BigDecimal.valueOf(700), account.getBalance());
-        assertEquals("Alice", response.customerName());
+        assertEquals("Alice", response.getCustomerName());
         verify(accountRepository).save(account);
     }
 
