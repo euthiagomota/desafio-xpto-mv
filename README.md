@@ -92,29 +92,65 @@ GET /api/customers/{customerId}/report?initialDate=2025-09-10&finalDate=2025-09-
 
 - **Criar cliente**
 ```
-POST /api/customers
+POST /api/customers/{PF}
 Body: {
-  "name": "string",
-  "cpf": "string",
-  "cnpj": "string",
-  "phone": "string",
+  "name": "João da Silva",
+  "cpf": "123.456.789-00",
+  "phone": "(11) 98765-4321",
   "address": {
-    "street": "string",
-    "homeNumber": "string",
-    "complement": "string",
-    "city": "string",
-    "state": "string",
-    "zipCode": "string",
-    "uf": "string"
+    "street": "Rua das Flores",
+    "homeNumber": "123",
+    "complement": "Apto 45",
+    "city": "São Paulo",
+    "state": "São Paulo",
+    "zipCode": "01001-000",
+    "uf": "SP"
   },
   "account": {
-    "accountNumber": "string",
-    "bank": "string",
-    "agency": "string",
-    "balance": 0
+    "accountNumber": "987654-3",
+    "bank": "Banco XPTO",
+    "agency": "1234",
+    "balance": 2500.75
   }
 }
 ```
 
 ---
+
+## ✅ Como Executar o Projeto
+
+1. **Clonar o repositório**
+```bash
+git clone https://github.com/euthiagomota/desafio-xpto-mv
+```
+
+2. **Entrar no diretório do projeto**
+```bash
+cd desafio-xpto-mv
+```
+
+3. **Compilar e rodar com Maven**
+```bash
+mvn spring-boot:run
+```
+
+4. **Acessar a documentação da API**
+```
+http://localhost:8080/swagger-ui.html
+```
+
+---
+
+## 🧪 Testes
+O projeto utiliza **JUnit e Mockito** para testes unitários.
+
+Rodar testes com Maven:
+```bash
+mvn test
+```
+
+---
+
+## 👨‍💻 Autor
+Projeto desenvolvido por **Thiago José** como desafio técnico da empresa MV.
 
