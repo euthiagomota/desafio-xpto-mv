@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("account")
-@Tag(name = "Account")
+@Tag(name = "Account", description = "Gerenciamento de contas de clientes")
 public class AccountController {
 
     private final AccountService accountService;
@@ -32,12 +32,6 @@ public class AccountController {
             responses = {
                     @ApiResponse(responseCode = "201", description = "Cliente criado com sucesso",
                             content = @Content(schema = @Schema(implementation = ResponseCustomerDto.class))),
-                    @ApiResponse(responseCode = "400", description = "Dados inválidos ou conta já cadastrada",
-                            content = @Content(schema = @Schema(example = "{ " +
-                                    "\"timestamp\": \"2025-09-12T20:50:00.123+00:00\"," +
-                                    " \"status\": 400, \"error\": \"Bad Request\"," +
-                                    " \"message\": \"Conta já existente.\"," +
-                                    " \"path\": \"/account/1\" }"))),
             }
     )
     @PostMapping("/{customerId}")
@@ -50,6 +44,14 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @Operation(
+            summary = "Atualiza uma conta bancária",
+            description = "Atualiza uma conta bancária e retorna as informações.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Cliente criado com sucesso",
+                            content = @Content(schema = @Schema(implementation = ResponseAccountDto.class))),
+            }
+    )
     @PatchMapping("/{id}/update")
     public ResponseEntity<ResponseAccountDto> update(
             @Valid  @RequestBody UpdateAccountDto dto,

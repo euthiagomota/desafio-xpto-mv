@@ -38,7 +38,7 @@ public class CustomerReportPerPeriodService {
         this.reportRepository = reportRepository;
     }
 
-    public String generateCustomerReportPerPeriod(Long customerId, LocalDate initialDate, LocalDate finalDate) {
+    public void generateCustomerReportPerPeriod(Long customerId, LocalDate initialDate, LocalDate finalDate) {
         var customer = this.customerRepository.findById(customerId)
                 .orElseThrow(() -> new NotFoundException("Cliente não encontrado"));
 
@@ -96,7 +96,6 @@ public class CustomerReportPerPeriodService {
                 "Saldo atual: " + String.format("R$ %.2f", actualValue);
 
         System.out.println(relatorio);
-        return relatorio;
     }
 
     private BigDecimal calculateCustomerValuePerPeriod(

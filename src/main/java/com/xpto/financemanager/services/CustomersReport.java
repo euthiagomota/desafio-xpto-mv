@@ -23,7 +23,7 @@ public class CustomersReport {
         this.accountRepository = accountRepository;
     }
 
-    public List<String> execute() {
+    public void execute() {
         List<CustomerEntity> customers = this.customerService.find();
 
         List<String> messages = new ArrayList<>();
@@ -45,7 +45,5 @@ public class CustomersReport {
             System.out.println(message);
             messages.add(message);
         });
-
-        return messages;
     }
 }

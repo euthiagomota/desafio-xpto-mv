@@ -37,7 +37,7 @@ public class CustomerReportService {
         this.reportRepository = reportRepository;
     }
 
-    public String generateCustomerReport(Long customerId) {
+    public void generateCustomerReport(Long customerId) {
         var customer = this.customerRepository.findById(customerId)
                 .orElseThrow(() -> new NotFoundException("Cliente não encontrado"));
 
@@ -94,7 +94,6 @@ public class CustomerReportService {
                 "Saldo atual: " + String.format("R$ %.2f", actualValue);
 
         System.out.println(relatorio);
-        return relatorio;
     }
 
     private BigDecimal calculateCustomerValue(Long customerId) {
