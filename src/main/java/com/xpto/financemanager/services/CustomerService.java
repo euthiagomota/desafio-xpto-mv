@@ -2,9 +2,11 @@ package com.xpto.financemanager.services;
 
 import com.xpto.financemanager.dtos.RequestCustomerDto;
 import com.xpto.financemanager.dtos.ResponseCustomerDto;
+import com.xpto.financemanager.dtos.UpdateCustomerDto;
 import com.xpto.financemanager.entities.AddressEntity;
 import com.xpto.financemanager.entities.CustomerEntity;
 import com.xpto.financemanager.enums.ECustomerType;
+import com.xpto.financemanager.exceptions.NotFoundException;
 import com.xpto.financemanager.repositories.AddressRepository;
 import com.xpto.financemanager.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -85,5 +87,36 @@ public class CustomerService {
                 customerSaved.getPhone(),
                 customerSaved.getRegisterAt()
         );
+    }
+
+    public ResponseCustomerDto update(Long id, UpdateCustomerDto dto) {
+       CustomerEntity customer = this.customerRepository.findById(id)
+               .orElseThrow(() -> new NotFoundException("Cliente não encontrado."));
+
+        if (dto.name() != null && !dto.name().isBlank()) {
+            customer.setName(dto.name());
+        }
+
+        if (dto.phone() != null && !dto.phone().isBlank()) {
+            customer.setPhone(dto.phone());
+        }
+
+      customer = this.customerRepository.save(customer);
+
+        return new ResponseCustomerDto(
+                customer.getId(),
+                customer.getName(),
+                customer.getCustomerType(),
+                customer.getCpf(),
+                customer.getCnpj(),
+                customer.getPhone(),
+                customer.getRegisterAt()
+        );
+    }
+
+    public void delete(Long id) {
+        CustomerEntity customer = this.customerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Cliente não encontrado."));
+        this.customerRepository.delete(customer);
     }
 }

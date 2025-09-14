@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,6 +50,12 @@ public class CustomerEntity {
     ECustomerType customerType;
 
     private LocalDateTime registerAt;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<AccountEntity> accounts;
+
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private AddressEntity address;
 
     @PrePersist
     protected void onCreate() {

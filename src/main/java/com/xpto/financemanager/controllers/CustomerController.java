@@ -2,6 +2,7 @@ package com.xpto.financemanager.controllers;
 
 import com.xpto.financemanager.dtos.RequestCustomerDto;
 import com.xpto.financemanager.dtos.ResponseCustomerDto;
+import com.xpto.financemanager.dtos.UpdateCustomerDto;
 import com.xpto.financemanager.enums.ECustomerType;
 import com.xpto.financemanager.services.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,4 +49,30 @@ public class CustomerController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @Operation(
+            summary = "Atualizar dados de um cliente",
+            description = "Atualiza dados de um cliente e retorna as informações criadas."
+    )
+    @PatchMapping("/{id}")
+    public ResponseEntity<ResponseCustomerDto> update(
+            @Valid @RequestBody UpdateCustomerDto dto,
+            @PathVariable("id")Long id
+    ) {
+        ResponseCustomerDto response = this.customerService.update(id, dto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @Operation(
+            summary = "Remover um cliente",
+            description = "Remove um cliente e seus registros."
+    )
+    @DeleteMapping("/{id}")
+    public void delete(
+            @PathVariable("id")Long id
+    ) {
+        this.customerService.delete(id);
+    }
+
 }

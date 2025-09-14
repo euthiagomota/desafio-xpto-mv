@@ -133,5 +133,5 @@ Body: {
 ## Observações
 - O projeto foi desenvolvido considerando **facilidade de manutenção e extensão futura**.
 - A integração com a função PL/SQL demonstra a capacidade de combinar Java com recursos do Oracle Database.
-- Relatórios podem ser impressos no console ou exportados para outros formatos.
+- Relatórios podem ser impressos no console.
 
