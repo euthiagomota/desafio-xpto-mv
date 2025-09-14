@@ -3,17 +3,18 @@ package com.xpto.financemanager.controllers;
 import com.xpto.financemanager.dtos.RequestCustomerDto;
 import com.xpto.financemanager.dtos.ResponseCustomerDto;
 import com.xpto.financemanager.dtos.UpdateCustomerDto;
-import com.xpto.financemanager.enums.ECustomerType;
+import com.xpto.financemanager.enums.CustomerType;
 import com.xpto.financemanager.services.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/customer")
@@ -43,7 +44,7 @@ public class CustomerController {
     @PostMapping("/{customerType}")
     public ResponseEntity<ResponseCustomerDto> create(
             @Valid @RequestBody RequestCustomerDto dto,
-            @PathVariable("customerType")ECustomerType customerType
+            @PathVariable("customerType") CustomerType customerType
             ) {
         ResponseCustomerDto response = this.customerService.createCustomer(dto, customerType);
 

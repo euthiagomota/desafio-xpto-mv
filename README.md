@@ -14,7 +14,7 @@ O projeto utiliza **Oracle Database** com funções e procedures PL/SQL como (`c
 ---
 
 ## Tecnologias Utilizadas
-- Java
+- Java 8
 - Spring Boot
 - Spring Data JPA
 - Oracle Database

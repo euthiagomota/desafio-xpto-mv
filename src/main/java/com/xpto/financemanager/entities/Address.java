@@ -1,10 +1,12 @@
 package com.xpto.financemanager.entities;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import javax.persistence.Entity;
+
+import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,9 +14,9 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "addresses")
-public class AddressEntity {
+public class Address {
 
-    public AddressEntity(
+    public Address(
             String street,
             String homeNumber,
             String city,
@@ -22,7 +24,7 @@ public class AddressEntity {
             String state,
             String zipCode,
             String uf,
-            CustomerEntity customer
+            Customer customer
 
     ) {
         this.street = street;
@@ -36,7 +38,7 @@ public class AddressEntity {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String street;
@@ -49,5 +51,5 @@ public class AddressEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
-    private CustomerEntity customer;
+    private Customer customer;
 }

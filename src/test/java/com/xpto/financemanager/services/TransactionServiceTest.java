@@ -2,10 +2,10 @@ package com.xpto.financemanager.services;
 
 import com.xpto.financemanager.dtos.RequestTransactionDto;
 import com.xpto.financemanager.dtos.ResponseTransactionDto;
-import com.xpto.financemanager.entities.AccountEntity;
-import com.xpto.financemanager.entities.CustomerEntity;
-import com.xpto.financemanager.entities.TransactionEntity;
-import com.xpto.financemanager.enums.ETransactionType;
+import com.xpto.financemanager.entities.Account;
+import com.xpto.financemanager.entities.Customer;
+import com.xpto.financemanager.entities.Transaction;
+import com.xpto.financemanager.enums.TransactionType;
 import com.xpto.financemanager.repositories.AccountRepository;
 import com.xpto.financemanager.repositories.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,26 +34,26 @@ class TransactionServiceTest {
 
     @Test
     void shouldCreateInitialTransaction() {
-        AccountEntity account = new AccountEntity();
+        Account account = new Account();
         account.setBalance(BigDecimal.ZERO);
 
         transactionService.createInitialTransaction(account, BigDecimal.valueOf(100));
 
-        ArgumentCaptor<TransactionEntity> captor = ArgumentCaptor.forClass(TransactionEntity.class);
+        ArgumentCaptor<Transaction> captor = ArgumentCaptor.forClass(Transaction.class);
         verify(transactionRepository).save(captor.capture());
 
-        TransactionEntity saved = captor.getValue();
+        Transaction saved = captor.getValue();
         assertEquals(BigDecimal.valueOf(100), saved.getAmount());
         assertEquals("Primeira transação", saved.getDescription());
-        assertEquals(ETransactionType.CREDIT, saved.getTransactionType());
+        assertEquals(TransactionType.CREDIT, saved.getTransactionType());
     }
 
     @Test
     void shouldCreateCreditTransactionAndIncreaseBalance() {
-        CustomerEntity customer = new CustomerEntity();
+        Customer customer = new Customer();
         customer.setName("John Doe");
 
-        AccountEntity account = new AccountEntity();
+        Account account = new Account();
         account.setAccountNumber("123");
         account.setBank("BankX");
         account.setAgency("0001");
@@ -66,10 +66,10 @@ class TransactionServiceTest {
         when(accountRepository.findByAccountNumberAndBankAndAgency("123", "BankX", "0001"))
                 .thenReturn(Optional.of(account));
 
-        TransactionEntity transaction = new TransactionEntity(ETransactionType.CREDIT, dto.amount(), dto.description(), account);
-        when(transactionRepository.save(any(TransactionEntity.class))).thenReturn(transaction);
+        Transaction transaction = new Transaction(TransactionType.CREDIT, dto.amount(), dto.description(), account);
+        when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
 
-        ResponseTransactionDto response = transactionService.createTransaction(dto, ETransactionType.CREDIT);
+        ResponseTransactionDto response = transactionService.createTransaction(dto, TransactionType.CREDIT);
 
         assertNotNull(response);
         assertEquals(BigDecimal.valueOf(700), account.getBalance());
@@ -79,10 +79,10 @@ class TransactionServiceTest {
 
     @Test
     void shouldCreateDebitTransactionAndDecreaseBalance() {
-        CustomerEntity customer = new CustomerEntity();
+        Customer customer = new Customer();
         customer.setName("Alice");
 
-        AccountEntity account = new AccountEntity();
+        Account account = new Account();
         account.setAccountNumber("456");
         account.setBank("BankY");
         account.setAgency("0002");
@@ -95,10 +95,10 @@ class TransactionServiceTest {
         when(accountRepository.findByAccountNumberAndBankAndAgency("456", "BankY", "0002"))
                 .thenReturn(Optional.of(account));
 
-        TransactionEntity transaction = new TransactionEntity(ETransactionType.DEBIT, dto.amount(), dto.description(), account);
-        when(transactionRepository.save(any(TransactionEntity.class))).thenReturn(transaction);
+        Transaction transaction = new Transaction(TransactionType.DEBIT, dto.amount(), dto.description(), account);
+        when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
 
-        ResponseTransactionDto response = transactionService.createTransaction(dto, ETransactionType.DEBIT);
+        ResponseTransactionDto response = transactionService.createTransaction(dto, TransactionType.DEBIT);
 
         assertNotNull(response);
         assertEquals(BigDecimal.valueOf(700), account.getBalance());
@@ -114,12 +114,12 @@ class TransactionServiceTest {
                 .thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class,
-                () -> transactionService.createTransaction(dto, ETransactionType.CREDIT));
+                () -> transactionService.createTransaction(dto, TransactionType.CREDIT));
     }
 
     @Test
     void shouldThrowWhenAccountIsInactive() {
-        AccountEntity account = new AccountEntity();
+        Account account = new Account();
         account.setActive(false);
 
         RequestTransactionDto dto = new RequestTransactionDto("123", "BankX", "0001", BigDecimal.valueOf(50), "Test");
@@ -128,6 +128,6 @@ class TransactionServiceTest {
                 .thenReturn(Optional.of(account));
 
         assertThrows(ResponseStatusException.class,
-                () -> transactionService.createTransaction(dto, ETransactionType.CREDIT));
+                () -> transactionService.createTransaction(dto, TransactionType.CREDIT));
     }
 }

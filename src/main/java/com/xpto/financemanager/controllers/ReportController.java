@@ -6,6 +6,8 @@ import com.xpto.financemanager.services.CustomerReportService;
 import com.xpto.financemanager.services.CustomersReport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -44,8 +46,8 @@ public class ReportController {
     @GetMapping("/{customerId}/period")
     public void getCustomerReport(
             @PathVariable Long customerId,
-            @RequestParam("initialDate") LocalDate initialDate,
-            @RequestParam("finalDate") LocalDate finalDate
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate initialDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate finalDate
 
     ) {
         customerReportPerPeriodService.generateCustomerReportPerPeriod(customerId, initialDate, finalDate);
@@ -62,11 +64,11 @@ public class ReportController {
             description = "Gera o relatório de receita da empresa no período informado, mostrando cada cliente e o total de receitas.")
     @GetMapping("/company")
     public void companyReport(
-            @RequestParam("initialDate") LocalDate startDate,
-            @RequestParam("finalDate") LocalDate endDAte
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate initialDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate finalDate
 
     ) {
-        this.companyReportService.getCompanyReport(startDate, endDAte);
+        this.companyReportService.getCompanyReport(initialDate, finalDate);
     }
 
 

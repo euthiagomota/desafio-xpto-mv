@@ -1,25 +1,31 @@
 package com.xpto.financemanager.dtos;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-public record RequestCustomerDto(
-        @NotBlank(message = "O nome não pode ser vazío")
-        @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 150 caracteres")
-        String name,
+import lombok.*;
 
-        String cpf,
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+public class RequestCustomerDto {
 
-        String cnpj,
+        @NotBlank(message = "O nome não pode ser vazio")
+        @Size(min = 2, max = 150, message = "O nome deve ter entre 2 e 150 caracteres")
+        private String name;
+
+        private String cpf;
+        private String cnpj;
 
         @NotBlank(message = "O telefone não pode ser vazio")
-        String phone,
+        private String phone;
 
         @Valid
-        RequestAddressDto address,
+        private RequestAddressDto address;
 
         @Valid
-        RequestAccountDto account
-) {
+        private RequestAccountDto account;
 }

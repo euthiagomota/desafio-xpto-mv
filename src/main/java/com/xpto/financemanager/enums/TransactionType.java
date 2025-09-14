@@ -1,6 +1,6 @@
 package com.xpto.financemanager.enums;
 
-public enum ETransactionType {
+public enum TransactionType {
     CREDIT,
     DEBIT
 }

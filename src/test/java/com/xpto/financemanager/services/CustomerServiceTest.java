@@ -4,9 +4,9 @@ import com.xpto.financemanager.dtos.RequestAccountDto;
 import com.xpto.financemanager.dtos.RequestAddressDto;
 import com.xpto.financemanager.dtos.RequestCustomerDto;
 import com.xpto.financemanager.dtos.UpdateCustomerDto;
-import com.xpto.financemanager.entities.AddressEntity;
-import com.xpto.financemanager.entities.CustomerEntity;
-import com.xpto.financemanager.enums.ECustomerType;
+import com.xpto.financemanager.entities.Address;
+import com.xpto.financemanager.entities.Customer;
+import com.xpto.financemanager.enums.CustomerType;
 import com.xpto.financemanager.exceptions.NotFoundException;
 import com.xpto.financemanager.repositories.AddressRepository;
 import com.xpto.financemanager.repositories.CustomerRepository;
@@ -59,21 +59,21 @@ class CustomerServiceTest {
     @Test
     void shouldCreateIndividualCustomerSuccessfully() {
         when(customerRepository.existsByCpf("12345678901")).thenReturn(false);
-        when(customerRepository.save(any(CustomerEntity.class)))
+        when(customerRepository.save(any(Customer.class)))
                 .thenAnswer(invocation -> {
-                    CustomerEntity c = invocation.getArgument(0);
+                    Customer c = invocation.getArgument(0);
                     c.setId(1L);
                     return c;
                 });
-        when(addressRepository.save(any(AddressEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(addressRepository.save(any(Address.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        var response = customerService.createCustomer(requestDto, ECustomerType.PF);
+        var response = customerService.createCustomer(requestDto, CustomerType.PF);
 
         assertNotNull(response);
         assertEquals("João Silva", response.name());
         assertEquals("12345678901", response.cpf());
-        verify(customerRepository, times(1)).save(any(CustomerEntity.class));
-        verify(accountService, times(1)).registerInitialAccount(any(CustomerEntity.class), any());
+        verify(customerRepository, times(1)).save(any(Customer.class));
+        verify(accountService, times(1)).registerInitialAccount(any(Customer.class), any());
     }
 
     @Test
@@ -84,7 +84,7 @@ class CustomerServiceTest {
         );
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> customerService.createCustomer(dtoSemCpf, ECustomerType.PF));
+                () -> customerService.createCustomer(dtoSemCpf, CustomerType.PF));
 
         assertEquals("CPF é obrigatório para pessoa física.", ex.getMessage());
     }
@@ -97,7 +97,7 @@ class CustomerServiceTest {
         );
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> customerService.createCustomer(dtoSemCnpj, ECustomerType.PJ));
+                () -> customerService.createCustomer(dtoSemCnpj, CustomerType.PJ));
 
         assertEquals("CNPJ é obrigatório para pessoa jurídica.", ex.getMessage());
     }
@@ -110,18 +110,18 @@ class CustomerServiceTest {
         );
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> customerService.createCustomer(dtoComCpfECnpj, ECustomerType.PF));
+                () -> customerService.createCustomer(dtoComCpfECnpj, CustomerType.PF));
 
         assertEquals("Cliente não pode ter CPF e CNPJ ao mesmo tempo.", ex.getMessage());
     }
 
     @Test
     void shouldUpdateCustomer() {
-        CustomerEntity clienteExistente = new CustomerEntity("Ana", "123", null, "1111", ECustomerType.PF);
+        Customer clienteExistente = new Customer("Ana", "123", null, "1111", CustomerType.PF);
         clienteExistente.setId(10L);
 
         when(customerRepository.findById(10L)).thenReturn(Optional.of(clienteExistente));
-        when(customerRepository.save(any(CustomerEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(customerRepository.save(any(Customer.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         UpdateCustomerDto updateDto = new UpdateCustomerDto("Ana Maria", "2222");
 
@@ -141,7 +141,7 @@ class CustomerServiceTest {
 
     @Test
     void shouldDeleteCustomer() {
-        CustomerEntity cliente = new CustomerEntity("Carlos", "123", null, "111", ECustomerType.PF);
+        Customer cliente = new Customer("Carlos", "123", null, "111", CustomerType.PF);
         cliente.setId(1L);
 
         when(customerRepository.findById(1L)).thenReturn(Optional.of(cliente));

@@ -1,12 +1,12 @@
 package com.xpto.financemanager.entities;
 
-import com.xpto.financemanager.enums.ETransactionType;
-import jakarta.persistence.*;
+import com.xpto.financemanager.enums.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "transactions")
-public class TransactionEntity {
+public class Transaction {
 
-    public TransactionEntity(ETransactionType transactionType, BigDecimal amount, String description, AccountEntity account) {
+    public Transaction(TransactionType transactionType, BigDecimal amount, String description, Account account) {
         this.transactionType = transactionType;
         this.amount = amount;
         this.description = description;
@@ -26,11 +26,11 @@ public class TransactionEntity {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private ETransactionType transactionType;
+    private TransactionType transactionType;
 
     private BigDecimal amount;
 
@@ -42,7 +42,7 @@ public class TransactionEntity {
 
     @ManyToOne()
     @JoinColumn(name = "account_id")
-    private AccountEntity account;
+    private Account account;
 
     @PrePersist
     protected void onCreate() {

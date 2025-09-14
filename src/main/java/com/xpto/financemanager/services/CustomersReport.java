@@ -1,7 +1,7 @@
 package com.xpto.financemanager.services;
 
-import com.xpto.financemanager.entities.AccountEntity;
-import com.xpto.financemanager.entities.CustomerEntity;
+import com.xpto.financemanager.entities.Account;
+import com.xpto.financemanager.entities.Customer;
 import com.xpto.financemanager.repositories.AccountRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class CustomersReport {
     }
 
     public void execute() {
-        List<CustomerEntity> customers = this.customerService.find();
+        List<Customer> customers = this.customerService.find();
 
         List<String> messages = new ArrayList<>();
 
@@ -34,15 +34,14 @@ public class CustomersReport {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String registerDate = customer.getRegisterAt().format(formatter);
 
-            List<AccountEntity> accounts = this.accountRepository.findByCustomerId(customer.getId());
+            List<Account> accounts = this.accountRepository.findByCustomerId(customer.getId());
 
             BigDecimal totalBalance = BigDecimal.ZERO;
-            for (AccountEntity account : accounts) {
+            for (Account account : accounts) {
                 totalBalance = totalBalance.add(account.getBalance());
             }
 
             String message = "Cliente: " + name + " - Cliente desde: "+ registerDate + " – Saldo atual: " + String.format("R$ %.2f", totalBalance);
-            System.out.println(message);
             messages.add(message);
         });
     }

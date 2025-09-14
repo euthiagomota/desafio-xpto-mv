@@ -1,6 +1,6 @@
 package com.xpto.financemanager.enums;
 
-public enum ECustomerType {
+public enum CustomerType {
     PF,
     PJ
 }

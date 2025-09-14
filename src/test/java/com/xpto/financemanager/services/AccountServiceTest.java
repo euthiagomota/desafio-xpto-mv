@@ -3,8 +3,8 @@ package com.xpto.financemanager.services;
 import com.xpto.financemanager.dtos.RequestAccountDto;
 import com.xpto.financemanager.dtos.ResponseAccountDto;
 import com.xpto.financemanager.dtos.UpdateAccountDto;
-import com.xpto.financemanager.entities.AccountEntity;
-import com.xpto.financemanager.entities.CustomerEntity;
+import com.xpto.financemanager.entities.Account;
+import com.xpto.financemanager.entities.Customer;
 import com.xpto.financemanager.exceptions.AccountAlreadyExistsException;
 import com.xpto.financemanager.exceptions.NotFoundException;
 import com.xpto.financemanager.repositories.AccountRepository;
@@ -37,7 +37,7 @@ class AccountServiceTest {
 
     @Test
     void testRegisterInitialAccount_Success() {
-        CustomerEntity customer = new CustomerEntity();
+        Customer customer = new Customer();
         customer.setId(1L);
         customer.setName("Thiago");
 
@@ -47,15 +47,15 @@ class AccountServiceTest {
 
         when(accountRepository.findByAccountNumberAndBankAndAgency(dto.accountNumber(), dto.bank(), dto.agency()))
                 .thenReturn(Optional.empty());
-        when(accountRepository.save(any(AccountEntity.class))).thenAnswer(i -> i.getArgument(0));
+        when(accountRepository.save(any(Account.class))).thenAnswer(i -> i.getArgument(0));
 
         accountService.registerInitialAccount(customer, dto);
 
-        ArgumentCaptor<AccountEntity> captor = ArgumentCaptor.forClass(AccountEntity.class);
+        ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
         verify(accountRepository).save(captor.capture());
-        verify(transactionService).createInitialTransaction(any(AccountEntity.class), eq(dto.balance()));
+        verify(transactionService).createInitialTransaction(any(Account.class), eq(dto.balance()));
 
-        AccountEntity savedAccount = captor.getValue();
+        Account savedAccount = captor.getValue();
         assertEquals(dto.accountNumber(), savedAccount.getAccountNumber());
         assertEquals(dto.agency(), savedAccount.getAgency());
         assertEquals(dto.bank(), savedAccount.getBank());
@@ -67,10 +67,10 @@ class AccountServiceTest {
     @Test
     void testRegisterInitialAccount_AccountAlreadyExists() {
         BigDecimal balance = BigDecimal.valueOf(1000);
-        CustomerEntity customer = new CustomerEntity();
+        Customer customer = new Customer();
         RequestAccountDto dto = new RequestAccountDto("12345", "001", "XYZ Bank", balance);
         when(accountRepository.findByAccountNumberAndBankAndAgency(dto.accountNumber(), dto.bank(), dto.agency()))
-                .thenReturn(Optional.of(new AccountEntity()));
+                .thenReturn(Optional.of(new Account()));
 
         assertThrows(AccountAlreadyExistsException.class, () ->
                 accountService.registerInitialAccount(customer, dto));
@@ -79,7 +79,7 @@ class AccountServiceTest {
     @Test
     void testRegisterAccount_Success() {
         Long customerId = 1L;
-        CustomerEntity customer = new CustomerEntity();
+        Customer customer = new Customer();
         customer.setId(customerId);
         customer.setName("Thiago");
 
@@ -90,7 +90,7 @@ class AccountServiceTest {
         when(accountRepository.findByAccountNumberAndBankAndAgency(dto.accountNumber(), dto.bank(), dto.agency()))
                 .thenReturn(Optional.empty());
         when(customerRepository.findById(customerId)).thenReturn(Optional.of(customer));
-        when(accountRepository.save(any(AccountEntity.class))).thenAnswer(i -> i.getArgument(0));
+        when(accountRepository.save(any(Account.class))).thenAnswer(i -> i.getArgument(0));
 
         ResponseAccountDto response = accountService.registerAccount(customerId, dto);
 
@@ -118,9 +118,9 @@ class AccountServiceTest {
     void testUpdateAccount_Success() {
         BigDecimal balance = BigDecimal.valueOf(1000);
         Long accountId = 1L;
-        CustomerEntity customer = new CustomerEntity();
+        Customer customer = new Customer();
         customer.setName("Thiago");
-        AccountEntity account = AccountEntity.builder()
+        Account account = Account.builder()
                 .id(accountId)
                 .accountNumber("12345")
                 .agency("001")
@@ -133,7 +133,7 @@ class AccountServiceTest {
         UpdateAccountDto dto = new UpdateAccountDto(false);
 
         when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
-        when(accountRepository.save(any(AccountEntity.class))).thenAnswer(i -> i.getArgument(0));
+        when(accountRepository.save(any(Account.class))).thenAnswer(i -> i.getArgument(0));
 
         ResponseAccountDto response = accountService.updateAccount(accountId, dto);
 

@@ -1,11 +1,11 @@
 package com.xpto.financemanager.entities;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -15,14 +15,14 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "account")
-public class AccountEntity {
+public class Account {
 
-    public AccountEntity(
+    public Account(
             String accountNumber,
             String bank,
             String agency,
             BigDecimal balance,
-            CustomerEntity customer,
+            Customer customer,
             Boolean active
     ) {
         this.accountNumber = accountNumber;
@@ -34,7 +34,7 @@ public class AccountEntity {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String accountNumber;
@@ -44,10 +44,10 @@ public class AccountEntity {
 
     @ManyToOne()
     @JoinColumn(name = "customer_id")
-    private CustomerEntity customer;
+    private Customer customer;
 
     private BigDecimal balance;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<TransactionEntity> transactions;
+    private List<Transaction> transactions;
 }

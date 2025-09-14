@@ -1,14 +1,20 @@
 package com.xpto.financemanager.dtos;
 
+import lombok.*;
+
 import java.math.BigDecimal;
 
-public record ResponseAccountDto(
-        Long id,
-        String accountNumber,
-        String bank,
-        String agency,
-        BigDecimal balance,
-        String accountOwner,
-        Boolean active
-) {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
+public class ResponseAccountDto {
+    private Long id;
+    private  String accountNumber;
+    private String bank;
+    private String agency;
+    private BigDecimal balance;
+    private  String accountOwner;
+    private  Boolean active;
 }

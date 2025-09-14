@@ -2,9 +2,9 @@ package com.xpto.financemanager.services;
 
 import com.xpto.financemanager.dtos.RequestTransactionDto;
 import com.xpto.financemanager.dtos.ResponseTransactionDto;
-import com.xpto.financemanager.entities.AccountEntity;
-import com.xpto.financemanager.entities.TransactionEntity;
-import com.xpto.financemanager.enums.ETransactionType;
+import com.xpto.financemanager.entities.Account;
+import com.xpto.financemanager.entities.Transaction;
+import com.xpto.financemanager.enums.TransactionType;
 import com.xpto.financemanager.repositories.AccountRepository;
 import com.xpto.financemanager.repositories.TransactionRepository;
 import org.springframework.http.HttpStatus;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+
 @Service
 public class TransactionService {
 
@@ -26,10 +27,10 @@ public class TransactionService {
         this.accountRepository = accountRepository;
     }
 
-    public void createInitialTransaction(AccountEntity account, BigDecimal balance) {
+    public void createInitialTransaction(Account account, BigDecimal balance) {
 
-        TransactionEntity transaction = new TransactionEntity(
-                ETransactionType.CREDIT,
+        Transaction transaction = new Transaction(
+                TransactionType.CREDIT,
                 balance,
                 "Primeira transação",
                 account
@@ -38,27 +39,27 @@ public class TransactionService {
         this.transactionRepository.save(transaction);
     }
 
-    public ResponseTransactionDto createTransaction(RequestTransactionDto dto, ETransactionType transactionType) {
-        var account = accountRepository
-                .findByAccountNumberAndBankAndAgency(dto.accountNumber(), dto.bank(), dto.agency())
+    public ResponseTransactionDto createTransaction(RequestTransactionDto dto, TransactionType transactionType) {
+        Account account = accountRepository
+                .findByAccountNumberAndBankAndAgency(dto.getAccountNumber(), dto.getBank(), dto.getAgency())
                 .orElseThrow(() -> new IllegalArgumentException("Conta não encontrada para a movimentação"));
 
-        if(!account.getActive()) {
+        if (!account.getActive()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Esta conta está desativada.");
         }
 
-        TransactionEntity transaction = new TransactionEntity(
+        Transaction transaction = new Transaction(
                 transactionType,
-                dto.amount(),
-                dto.description(),
+                dto.getAmount(),
+                dto.getDescription(),
                 account
         );
 
-        var transactionSaved = this.transactionRepository.save(transaction);
+        Transaction transactionSaved = this.transactionRepository.save(transaction);
 
-        if (transactionType == ETransactionType.CREDIT) {
+        if (transactionType == TransactionType.CREDIT) {
             account.setBalance(account.getBalance().add(transaction.getAmount()));
-        } else if (transactionType == ETransactionType.DEBIT) {
+        } else if (transactionType == TransactionType.DEBIT) {
             account.setBalance(account.getBalance().subtract(transaction.getAmount()));
         }
         accountRepository.save(account);
@@ -73,5 +74,4 @@ public class TransactionService {
                 account.getBank()
         );
     }
-
 }

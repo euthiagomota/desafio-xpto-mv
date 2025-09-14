@@ -1,12 +1,12 @@
 package com.xpto.financemanager.entities;
 
-import com.xpto.financemanager.enums.ECustomerType;
-import jakarta.persistence.*;
+import com.xpto.financemanager.enums.CustomerType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,14 +16,14 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "customer")
-public class CustomerEntity {
+public class Customer {
 
-    public CustomerEntity(
+    public Customer(
             String name,
             String cpf,
             String cnpj,
             String phone,
-            ECustomerType customerType
+            CustomerType customerType
     ) {
         this.name = name;
         this.cpf = cpf;
@@ -33,7 +33,7 @@ public class CustomerEntity {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;
@@ -47,15 +47,15 @@ public class CustomerEntity {
     private String phone;
 
     @Enumerated(EnumType.STRING)
-    ECustomerType customerType;
+    CustomerType customerType;
 
     private LocalDateTime registerAt;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<AccountEntity> accounts;
+    private List<Account> accounts;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private AddressEntity address;
+    private Address address;
 
     @PrePersist
     protected void onCreate() {

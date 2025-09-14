@@ -1,10 +1,10 @@
 package com.xpto.financemanager.services;
 
-import com.xpto.financemanager.entities.AccountEntity;
-import com.xpto.financemanager.entities.AddressEntity;
-import com.xpto.financemanager.entities.CustomerEntity;
-import com.xpto.financemanager.entities.TransactionEntity;
-import com.xpto.financemanager.enums.ETransactionType;
+import com.xpto.financemanager.entities.Account;
+import com.xpto.financemanager.entities.Address;
+import com.xpto.financemanager.entities.Customer;
+import com.xpto.financemanager.entities.Transaction;
+import com.xpto.financemanager.enums.TransactionType;
 import com.xpto.financemanager.exceptions.NotFoundException;
 import com.xpto.financemanager.repositories.*;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerReportService {
@@ -38,31 +39,31 @@ public class CustomerReportService {
     }
 
     public void generateCustomerReport(Long customerId) {
-        var customer = this.customerRepository.findById(customerId)
+        Customer customer = this.customerRepository.findById(customerId)
                 .orElseThrow(() -> new NotFoundException("Cliente não encontrado"));
 
-        List<AccountEntity> accounts = this.accountRepository.findByCustomerId(customerId);
+        List<Account> accounts = this.accountRepository.findByCustomerId(customerId);
 
         List<Long> accountIds = accounts
                 .stream()
-                .map(AccountEntity::getId)
-                .toList();
+                .map(Account::getId)
+                .collect(Collectors.toList());
 
-        List<TransactionEntity> transactions = this.transactionRepository.findByAccountIdIn(accountIds);
+        List<Transaction> transactions = this.transactionRepository.findByAccountIdIn(accountIds);
 
-        TransactionEntity firstTransaction = transactions.stream()
-                .min(Comparator.comparing(TransactionEntity::getTransactionDate))
+        Transaction firstTransaction = transactions.stream()
+                .min(Comparator.comparing(Transaction::getTransactionDate))
                 .orElseThrow(() -> new NotFoundException("Nenhuma transação encontrada."));
 
         int creditsTransactionsQuantity = (int) transactions.stream()
-                .filter(t -> t.getTransactionType() == ETransactionType.CREDIT)
+                .filter(t -> t.getTransactionType() == TransactionType.CREDIT)
                 .count();
 
         int debitsTransactionsQuantity = (int) transactions.stream()
-                .filter(t -> t.getTransactionType() == ETransactionType.DEBIT)
+                .filter(t -> t.getTransactionType() == TransactionType.DEBIT)
                 .count();
 
-        BigDecimal actualValue = accounts.stream().map(AccountEntity::getBalance)
+        BigDecimal actualValue = accounts.stream().map(Account::getBalance)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         String customerName = customer.getName();
@@ -70,7 +71,7 @@ public class CustomerReportService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         String dataRegister = customer.getRegisterAt().format(formatter);
 
-        AddressEntity addr = this.addressRepository.findByCustomerId(customerId)
+        Address addr = this.addressRepository.findByCustomerId(customerId)
                 .orElseThrow(() -> new NotFoundException("Endereço não encontrado"));
 
         String address = addr != null
@@ -97,7 +98,7 @@ public class CustomerReportService {
     }
 
     private BigDecimal calculateCustomerValue(Long customerId) {
-        CustomerEntity customer = this.customerRepository.findById(customerId)
+        Customer customer = this.customerRepository.findById(customerId)
                 .orElseThrow(() -> new NotFoundException("Cliente não encontrado."));
 
         return this.reportRepository.calculateCustomerValue(customer.getId());

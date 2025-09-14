@@ -1,6 +1,14 @@
 package com.xpto.financemanager.dtos;
 
-public record UpdateAccountDto(
-        Boolean active
-) {
+import lombok.*;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
+public class UpdateAccountDto {
+    private Boolean active;
 }
+
+
