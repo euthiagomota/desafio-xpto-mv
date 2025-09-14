@@ -68,12 +68,12 @@ src/main/java
  └── com.xpto.financemanager
       ├── config          # Configurações da API
       ├── controller      # Endpoints da API
-      ├── dto             # Regras de negócio
-      ├── entities        # Acesso a dados (Oracle)
-      ├── enums           # Modelos de dados (Cliente, Conta, Transação)
-      ├── exceptions      # Data Transfer Objects
-      ├── repositories    # Enumerações (ex: tipos de transação)
-      └── services        # Tratamento de erros
+      ├── dto             # Data Transfer Objects
+      ├── entities        # Modelos de dados (Cliente, Conta, Transação)
+      ├── enums           # Enumerações (ex: tipos de transação)
+      ├── exceptions      # Tratamento de erros
+      ├── repositories    # Acesso a dados (Oracle)
+      └── services        # Regras de negócio
 ```
 
 ---
