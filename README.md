@@ -9,18 +9,19 @@ O sistema permite:
 - Gerar relatórios de saldo de clientes, incluindo período específico.
 - Calcular a receita da empresa com base na quantidade de movimentações de cada cliente.
 
-O projeto utiliza **Oracle Database** e uma função PL/SQL (`calcular_valor_cliente_por_periodo`) para cálculo do valor pago pelo cliente no período, demonstrando integração entre Java e PL/SQL.
+O projeto utiliza **Oracle Database** com funções e procedures PL/SQL como (`calcular_valor_cliente_por_periodo`) para cálculo do valor pago pelo cliente no período, demonstrando integração entre Java e PL/SQL.
 
 ---
 
 ## Tecnologias Utilizadas
-- Java 8
+- Java
 - Spring Boot
 - Spring Data JPA
 - Oracle Database
 - Maven
 - Lombok
 - OpenAPI
+- Spring Validation
 
 ---
 
@@ -53,12 +54,10 @@ Durante o desenvolvimento, foram aplicadas diversas boas práticas para garantir
 ---
 
 ## Padrões de Projeto Utilizados
-- **Repository Pattern**: abstração do acesso a dados e simplificação de consultas.
 - **Service Layer Pattern**: centralização da lógica de negócio, deixando controllers limpos.
 - **DTO Pattern**: separação entre entidades internas e dados expostos pela API.
 - **Builder Pattern (Lombok)**: instanciamento legível de entidades complexas.
 - **Exception Handling Pattern**: padronização no tratamento de erros e mensagens retornadas.
-- **Factory/Helper Pattern**: usado para gerar relatórios a partir de dados agregados das contas e transações.
 
 ---
 
@@ -118,20 +117,4 @@ Body: {
 ```
 
 ---
-
-## Regras de Negócio
-- Clientes PF e PJ podem ter várias contas bancárias.
-- Movimentações iniciais são obrigatórias para cada cliente.
-- Alteração de dados bancários não é permitida se houver movimentações associadas.
-- Cálculo do valor pago pelo cliente baseado na quantidade de movimentações em 30 dias:
-    - Até 10 movimentações: R$ 1,00 por operação
-    - De 11 a 20 movimentações: R$ 0,75 por operação
-    - Acima de 20 movimentações: R$ 0,50 por operação
-
----
-
-## Observações
-- O projeto foi desenvolvido considerando **facilidade de manutenção e extensão futura**.
-- A integração com a função PL/SQL demonstra a capacidade de combinar Java com recursos do Oracle Database.
-- Relatórios podem ser impressos no console.
 

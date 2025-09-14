@@ -11,6 +11,8 @@ import com.xpto.financemanager.repositories.AddressRepository;
 import com.xpto.financemanager.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomerService {
 
@@ -118,5 +120,9 @@ public class CustomerService {
         CustomerEntity customer = this.customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Cliente não encontrado."));
         this.customerRepository.delete(customer);
+    }
+
+    public List<CustomerEntity> find() {
+        return this.customerRepository.findAll();
     }
 }

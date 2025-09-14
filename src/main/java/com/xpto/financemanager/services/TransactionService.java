@@ -6,8 +6,6 @@ import com.xpto.financemanager.entities.AccountEntity;
 import com.xpto.financemanager.entities.TransactionEntity;
 import com.xpto.financemanager.enums.ETransactionType;
 import com.xpto.financemanager.repositories.AccountRepository;
-import com.xpto.financemanager.repositories.AddressRepository;
-import com.xpto.financemanager.repositories.CustomerRepository;
 import com.xpto.financemanager.repositories.TransactionRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,9 +20,7 @@ public class TransactionService {
 
     public TransactionService(
             TransactionRepository transactionRepository,
-            AccountRepository accountRepository,
-            CustomerRepository customerRepository,
-            AddressRepository addressRepository
+            AccountRepository accountRepository
     ) {
         this.transactionRepository = transactionRepository;
         this.accountRepository = accountRepository;
