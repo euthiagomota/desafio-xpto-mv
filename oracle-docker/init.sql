@@ -1,5 +1,10 @@
--- init.sql
--- Concede permissões completas para o usuário de aplicação
+-- Cria o usuário de aplicação
+CREATE USER admin IDENTIFIED BY app123
+DEFAULT TABLESPACE users
+TEMPORARY TABLESPACE temp
+ACCOUNT UNLOCK;
+
+-- Concede permissões básicas
 GRANT CREATE SESSION TO admin;
 GRANT CREATE TABLE TO admin;
 GRANT CREATE VIEW TO admin;
@@ -7,4 +12,6 @@ GRANT CREATE SEQUENCE TO admin;
 GRANT CREATE PROCEDURE TO admin;
 GRANT CREATE TRIGGER TO admin;
 GRANT ALTER SESSION TO admin;
-GRANT UNLIMITED TABLESPACE TO admin;
+
+-- Permissão de tablespace ilimitado
+ALTER USER admin QUOTA UNLIMITED ON users;
