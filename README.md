@@ -130,6 +130,9 @@ cd desafio-xpto-mv
 ```
 3. **Rodar o Docker Compose para criar o banco**
 ```bash
+cd oracle-docker
+```
+```bash
 docker compose up
 ```
 
