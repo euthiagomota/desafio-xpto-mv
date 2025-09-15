@@ -44,5 +44,8 @@ public class CustomersReport {
             String message = "Cliente: " + name + " - Cliente desde: "+ registerDate + " – Saldo atual: " + String.format("R$ %.2f", totalBalance);
             messages.add(message);
         });
+        for (String message: messages) {
+            System.out.println(message);
+        }
     }
 }

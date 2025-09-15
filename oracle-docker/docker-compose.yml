@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  oracle-db:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: oracle-db
+    environment:
+      - ORACLE_PASSWORD=admin
+      - APP_USER=admin
+      - APP_USER_PASSWORD=app123
+      - DISABLE_ORACLE_MEMORY_TARGET=true
+      - INIT_SGA_SIZE=1G
+      - INIT_PGA_SIZE=512M
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+      - ./init.sql:/opt/oracle/scripts/setup/init.sql
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+
+volumes:
+  oracle-data:

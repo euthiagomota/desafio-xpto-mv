@@ -1,0 +1,10 @@
+-- init.sql
+-- Concede permissões completas para o usuário de aplicação
+GRANT CREATE SESSION TO admin;
+GRANT CREATE TABLE TO admin;
+GRANT CREATE VIEW TO admin;
+GRANT CREATE SEQUENCE TO admin;
+GRANT CREATE PROCEDURE TO admin;
+GRANT CREATE TRIGGER TO admin;
+GRANT ALTER SESSION TO admin;
+GRANT UNLIMITED TABLESPACE TO admin;
