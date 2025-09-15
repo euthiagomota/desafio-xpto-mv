@@ -128,13 +128,17 @@ git clone https://github.com/euthiagomota/desafio-xpto-mv
 ```bash
 cd desafio-xpto-mv
 ```
+3. **Rodar o Docker Compose para criar o banco**
+```bash
+docker compose up
+```
 
-3. **Compilar e rodar com Maven**
+4. **Compilar e rodar com Maven**
 ```bash
 mvn spring-boot:run
 ```
 
-4. **Acessar a documentação da API**
+5. **Acessar a documentação da API**
 ```
 http://localhost:8080/swagger-ui.html
 ```
