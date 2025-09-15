@@ -82,17 +82,17 @@ src/main/java
 
 - **Consultar saldo de cliente**
 ```
-GET /api/customers/{customerId}/report
+GET /reports/{customerId}
 ```
 
 - **Consultar saldo de cliente por período**
 ```
-GET /api/customers/{customerId}/report?initialDate=2025-09-10&finalDate=2025-09-11
+GET /reports/{customerId}/period?initialDate=2025-09-10&finalDate=2025-09-11
 ```
 
 - **Criar cliente**
 ```
-POST /api/customers/{PF}
+POST /customer/{PF}
 Body: {
   "name": "João da Silva",
   "cpf": "123.456.789-00",
